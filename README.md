@@ -2,6 +2,8 @@
 
 Insert blog reference here
 
+Requires oracledb python module and Oracle instantclient (it runs in thick mode... for now). I only tested it with instantclient 21.9.
+
 ## Analysing the results
 
 Results are written in CSV format to /tmp/failover.csv
