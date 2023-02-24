@@ -1,6 +1,6 @@
 # Code for testing Oracle database failover timings
 
-Insert blog reference here
+[Full blog post about the results is here](https://ilmarkerm.eu/blog/2023/02/testing-client-failover-with-data-guard-fast-start-failover-1-setup/)
 
 Requires oracledb python module and Oracle instantclient (it runs in thick mode... for now). I only tested it with instantclient 21.9.
 
