@@ -4,6 +4,8 @@
 
 Requires oracledb python module and Oracle instantclient (it runs in thick mode... for now). I only tested it with instantclient 21.9.
 
+It runs multiple simple test queries on the target database, in multiple threads. It logs all errors received, and when the database driver reports that the connection is no longer valid, it tries to reconnect and resume testing as fast as possible. All timestamps are logged.
+
 ## Analysing the results
 
 Results are written in CSV format to /tmp/failover.csv
