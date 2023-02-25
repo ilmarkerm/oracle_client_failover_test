@@ -50,21 +50,21 @@ WITH tr AS (
     WHERE testcode='rerun_local_switchover' AND testname in ('read','write')
 ),
 minmaxtime AS (
-    SELECT cast(min(logtime)-numtodsinterval(5, 'second') as timestamp(0) with time zone) mintime, 
-    max(logtime)+numtodsinterval(5, 'second') maxtime
+    SELECT cast(min(logtime) as timestamp(0) with time zone) mintime, 
+    max(logtime) maxtime
     FROM tr WHERE testresult='False'
 ),
 rowgenerator(r) AS (
-    SELECT 1 r FROM dual
+    SELECT -4 r FROM dual
     UNION ALL
     SELECT r+1 FROM rowgenerator WHERE r < 600
 ),
 timegrid AS (
     SELECT cast(minmaxtime.mintime+numtodsinterval(rowgenerator.r, 'second') as timestamp(0) with time zone) ts
     FROM rowgenerator CROSS JOIN minmaxtime
-    WHERE minmaxtime.mintime+numtodsinterval(rowgenerator.r, 'second') < minmaxtime.maxtime
+    WHERE minmaxtime.mintime+numtodsinterval(rowgenerator.r, 'second') < minmaxtime.maxtime+numtodsinterval(5, 'second')
 )
-SELECT p.*, ts-minmaxtime.mintime-numtodsinterval(5, 'second') delta FROM (
+SELECT p.*, ts-minmaxtime.mintime delta FROM (
     SELECT * FROM (
             SELECT timegrid.ts, tr.testname, tr.testresult, tr.instance_name, tr.errcode
             FROM timegrid LEFT OUTER JOIN tr ON timegrid.ts = cast(tr.logtime as timestamp(0) with time zone)
